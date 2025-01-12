@@ -1,0 +1,19 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<h1>Login Page</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <form action="/auth/login" method="post" class="form-control">
+                <input type="email" name="email" placeholder="Email" class="form-control"><br>
+                <input type="password" name="password" placeholder="Password" class="form-control"><br>
+                <% if (msg) { %>
+                 <p class="text-danger"><%= msg %></p>
+                <% } %>
+                <button class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/bottom') %>

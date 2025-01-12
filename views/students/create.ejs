@@ -1,0 +1,17 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<h1>Create New Student</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <form action="/students/store" method="post">
+                <input type="text" name="first_name" placeholder="First Name" class="form-control"><br>
+                <input type="text" name="last_name" placeholder="Last Name" class="form-control"><br>
+                <input type="email" name="email" placeholder="Email" class="form-control"><br>
+                <button class="btn btn-primary form-control">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/bottom') %>

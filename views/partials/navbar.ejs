@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><i class="bi bi-app-indicator"></i> Online Academy</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link <%= (title === 'Students' ? 'active' : '') %>" aria-current="page" href="/students">Students</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= (title === 'Courses' ? 'active' : '') %>" href="/courses">Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= (title === 'Enrollments' ? 'active' : '') %>" href="/enrollments">Enrollments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= (title === 'Payments' ? 'active' : '') %>" href="/payments">Payments</a>
+          </li>
+        </ul>
+        <% if (!user) { %>
+          <a href="/auth/login" class="btn btn-primary btn-lg"> <i class="bi bi-person"></i>  Login</a>
+        <% }else{ %>
+          <span class="badge text-bg-info"><%= user.email %> &nbsp;</span> &nbsp; <a href="/auth/logout" class="btn btn-danger btn-lg">&nbsp; Logout</a>
+        <% } %>
+      </div>
+    </div>
+  </nav>

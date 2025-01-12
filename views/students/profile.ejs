@@ -1,0 +1,60 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<h1><%= student.first_name %> Profile</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-8 offset-2">
+            <div class="row">
+                <div class="alert alert-info">
+                    <h4><%= student.first_name %> <%= student.last_name%></h4>
+                    <p><%= student.email %></p>
+                </div> 
+            </div>
+            <div class="row">
+                <div class="alert alert-success">
+                    <div class="row">
+                        <% enrollments.forEach(enrollment => { %>
+                            <div class="col-4">
+                                <div class="alert alert-secondary">
+                                    <p><%= enrollment.title %></p>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div> 
+            </div>
+            <div class="row mb-3">
+                <% payments.forEach(payment => { %>
+                    <button class="btn btn-outline-success"><%= payment.title%> - <%= payment.amount%></button>
+                <% }) %>
+            </div>
+            <div class="row">
+                <div class="col-6 alert alert-warning">
+                    <form action="/enrollments/store" method="post">
+                        <select name="course_id" class="form-control">
+                            <% filteredCourses.forEach(course => { %>
+                                <option value="<%= course.course_id %>"><%= course.title %></option>                             
+                            <% }) %>
+                        </select><br>
+                        <input type="hidden" name="student_id" value="<%= student.student_id %>">
+                        <button class="btn btn-danger">Add Enrollment</button>
+                    </form>
+                </div>
+                <div class="col-6 alert alert-info">
+                    <form action="/payments/store" method="post">
+                        <select name="course_id" class="form-control">
+                            <% enrollments.forEach(enrollment => { %>
+                                <option value="<%= enrollment.course_id %>"><%= enrollment.title %></option>
+                            <% }) %>
+                        </select><br>
+                        <input type="number" name="amount" placeholder="Amount" class="form-control"><br>
+                        <input type="hidden" name="student_id" value="<%= student.student_id %>">
+                        <button class="btn btn-warning">Add Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/bottom') %>

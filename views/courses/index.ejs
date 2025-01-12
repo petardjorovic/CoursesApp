@@ -1,0 +1,31 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<h1>All Courses <%= courses.length %></h1>
+<div class="container">
+            <div class="row">
+                <div class="col-8 offset-2">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Title</th>
+                                <th>Instructor</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% courses.forEach(course => { %>
+                                <tr>
+                                    <td><%= course.course_id %></td>
+                                    <td><%= course.title %></td>
+                                    <td><%= course.instructor %></td>
+                                    <td><a href="" class="btn btn-info">Students</a></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+</div>
+
+<%- include('../partials/bottom') %>
