@@ -1,0 +1,22 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<h1>Register Page</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <form action="/auth/register" method="post" class="form-control">
+                <input type="text" name="first_name" placeholder="First Name" class="form-control" required><br>
+                <input type="text" name="last_name" placeholder="Last Name" class="form-control" required><br>
+                <input type="email" name="email" placeholder="Email" class="form-control" required><br>
+                <input type="password" name="password" placeholder="Password" class="form-control" required><br>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control" required><br>
+                <% if (msg) { %>
+                    <p class="text-danger"><%= msg %></p>
+                <% } %>
+                <button class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/bottom') %>

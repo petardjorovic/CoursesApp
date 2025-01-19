@@ -1,5 +1,7 @@
 const express = require('express');
 const session = require('express-session');
+const db = require("./database/config");
+
 
 const app = express();
 const isProduction = process.env.NODE_ENV === 'production';
@@ -17,8 +19,14 @@ app.use(session({
 
 
 // koriscenje globalne promenljive
-app.use((req,res,next)=>{
-    res.locals.user = req.session.user;
+app.use(async(req,res,next)=>{
+    let admin_id = req.session.user;
+    const [[user]] = await db.query(`SELECT admin_id, email FROM admins WHERE admin_id = ?`, [admin_id]);
+    if(user){
+        res.locals.user = {id: admin_id, email: user.email};
+    }else{
+        res.locals.user = "";
+    }
     next();
 });
 app.use(express.static(__dirname + '/public'));
@@ -30,6 +38,12 @@ app.use(express.json());
 
 
 app.use(require('./routes'));
+
+app.use((err,req,res,next)=>{
+    if(err){
+        res.render("error_page", {title: "Error Page",errorMsg:err, route: req.headers.referer});
+    }
+})
 
 app.listen(process.env.PORT, ()=>{
     console.log('Listening on PORT ' + process.env.PORT + '.....')
