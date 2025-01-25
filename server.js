@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const db = require("./database/config");
+const { SESSION_SECRET, PORT } = require('./libs/config');
 
 
 const app = express();
@@ -8,7 +9,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 app.set('view engine', 'ejs');
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -45,6 +46,6 @@ app.use((err,req,res,next)=>{
     }
 })
 
-app.listen(process.env.PORT, ()=>{
-    console.log('Listening on PORT ' + process.env.PORT + '.....')
+app.listen(PORT, ()=>{
+    console.log('Listening on PORT ' + PORT + '.....')
 })

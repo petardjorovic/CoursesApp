@@ -1,5 +1,7 @@
 const db = require("../database/config");
 const bcrypt = require("bcryptjs");
+const sendMail = require("../libs/sendMail");
+const { APP_BASE_URL } = require("../libs/config");
 
 const loginPage = async (req, res) => {
   const msg = req.session.errorMsg;
@@ -46,7 +48,10 @@ const register = async (req, res,next) => {
                             throw new Error(err.message)
                         }else{
                           const registeredUser = await db.query(`INSERT INTO admins (first_name, last_name, email, password) VALUES (?, ?, ?, ?);`, [first_name, last_name, email, hash]);
-                          res.redirect("/auth/login");
+                          let activationLink = `${APP_BASE_URL}/auth/activate/${registeredUser[0].insertId}`;
+                          let info = await sendMail(email, activationLink);
+                          console.log(info)
+                          res.redirect("/");
                         }
                     } catch (error) {
                         next(error.message)
@@ -67,8 +72,8 @@ const register = async (req, res,next) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const [[user]] = await db.query(`SELECT * FROM admins WHERE email = ?`, [
-      email,
+    const [[user]] = await db.query(`SELECT * FROM admins WHERE email = ? AND isActive = ?`, [
+      email, 1
     ]);
     if (user) {
         const checkPassword = await bcrypt.compare(password, user.password);
@@ -80,7 +85,7 @@ const login = async (req, res) => {
         res.redirect("/auth/login");
       }
     } else {
-      req.session.errorMsg = "There isn't such a user!";
+      req.session.errorMsg = "There isn't such a user or account is not activated!";
       res.redirect("/auth/login");
     }
   } catch (error) {
@@ -93,10 +98,21 @@ const logout = (req, res) => {
   res.redirect("/");
 };
 
+const activate = async(req,res,next)=>{
+  try {
+    let id = req.params.id;
+    const user = await db.query(`UPDATE admins SET isActive = ? WHERE admin_id = ? AND isActive = 0;`,[1, id]);
+    res.redirect("/auth/login");
+  } catch (error) {
+    next(new Error(error.message));
+  }
+}
+
 module.exports = {
   loginPage,
   login,
   logout,
   registerPage,
   register,
+  activate
 };
